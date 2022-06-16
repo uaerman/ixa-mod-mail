@@ -100,7 +100,6 @@ Brief description of what you need to do to set up a bot.
     }
    ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 <!-- ROADMAP -->
@@ -110,7 +109,6 @@ Brief description of what you need to do to set up a bot.
 
 <!-- See the [open issues](https://github.com/chillyixa/ixa-nsfw-bot/issues) for a full list of proposed features (and known issues). -->
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 <!-- LICENSE -->
