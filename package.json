@@ -1,0 +1,24 @@
+{
+  "name": "ixa_modmail",
+  "version": "1.0.0",
+  "description": "Basic Discord Mod-Mail bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "modmail-bot",
+    "discord-bot",
+    "discord",
+    "bot"
+  ],
+  "author": "iXargon",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "discord.js": "^13.1.0",
+    "moment": "^2.29.1",
+    "mongoose": "^6.3.8",
+    "ms": "^2.1.3"
+  }
+}

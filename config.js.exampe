@@ -1,0 +1,22 @@
+module.exports = {
+    settings: {
+        prefix: "!",
+        owner: "Your Discord ID",
+        token: "Bot token",
+        mongodb_sv: 'Mongo DB Url',
+    },
+    modmail: {
+        guildId: "Your guild Id",
+        modRole: "Moderator Role ID",
+        category: "Category Id",
+        log: "Mod-Mail Log channel Id"
+    },
+    colors: {
+        base: 0x7289da,
+        positive: 0x3498db,
+        natural: 0xe67e22,
+        negative: 0xe91e63,
+        green: 0x1db954,
+        red: 0xf04525
+        }
+}
