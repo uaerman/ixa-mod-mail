@@ -92,18 +92,11 @@ Brief description of what you need to do to set up a bot.
    ```
 4. Fill informations `config.js.example` to `config.js`
    ```js
-module.exports = {
+   module.exports = {
     settings: {
-        prefix: "!",
-        owner: "Your Discord ID",
-        token: "Bot Token",
-        mongodb_sv: 'Mongo DB Url',
-    },
-    modmail: {
-        guildId: "Your guild Id",
-        modRole: "Moderator Role ID",
-        category: "Category Id",
-        log: "Mod-Mail Log channel Id"
+        prefix: "PREFIX",
+        owner: "YOUR_DISCORD_ID",
+        token: "BOT_TOKEN"
     }
    ```
 
