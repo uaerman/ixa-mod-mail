@@ -7,6 +7,11 @@ module.exports = {
     category: 'modmail',
     description: 'Remove a user from blacklist.',
     async execute(client, message, args) {
+        const missingPermission = new MessageEmbed()
+        .setTitle("Permission Missing")
+        .setColor(colors.negative)
+        .setDescription("You do not have the necessary permissions to use this command.")
+        if (!message.member.roles.cache.has(modmail.modRole)) return message.channel.send({embeds: [missingPermission]})
         let member = message.mentions.users.first()
         let guild = message.guild
         let log = guild.channels.cache.get(modmail.log)
@@ -14,14 +19,13 @@ module.exports = {
         .setTitle("Invalid Arguments")
         .setColor(colors.negative)
         .setDescription("Please check the command usage below.")
-        .addField("Usage", `\`\`\`${settings.prefix}whitelist <member> \`\`\``)
+        .addField("Usage", `\`\`\`${settings.prefix}whitelist @member/<@memerID> \`\`\``)
         const invalidUser = new MessageEmbed()
         .setTitle("Invalid User")
         .setColor(colors.negative)
         .setDescription("You cannot add this user to the whitelist.")
         if (!member) return message.channel.send({embeds: [invalidArgs]})
         if (member.bot) return message.channel.send({embeds: [invalidUser]})
-        if (message.guild.members.cache.get(member.id).permissions.has("ADMINISTRATOR")) return message.channel.send(invalidUser)
         const profileData = await User.findOne({user: member.id})
         if (!profileData) {
            const failed = new MessageEmbed()
@@ -32,15 +36,11 @@ module.exports = {
             return;
         }
         else if (profileData.blacklist == false) {
-            const failed = new MessageEmbed()
-            .setTitle("Action Failed")
-            .setDescription(`This user is already whitelisted.`)
-            .setColor(colors.negative)
             message.channel.send({embeds: [failed]})
             return;
         }
         else {
-            const change = await User.findOneAndRemove({ userID: member.id}).catch((error) => {
+            const change = await User.findOneAndUpdate({ userID: member.id}, { $set: {blacklist: false } }, {new: true}).catch((error) => {
                 message.reply("something went wrong...")
                 console.log(error)
                 return;
@@ -55,7 +55,12 @@ module.exports = {
         .setTitle("User Whitelisted")
         .setDescription(`<@${message.author.id}> removed the <@${member.id}> to the blacklist.`)
         .setColor(colors.green)
-        log.send({embeds: [successLog]})        
+        log.send({embeds: [successLog]})
+        const whitelistWarn = new MessageEmbed()
+        .setTitle("User Whitelistes")
+        .setDescription(`This user whitelist back! All messages will be send to user.`)
+        .setColor(colors.positive)
+        message.guild.channels.cache.get(profileData.channel).send({embeds: [whitelistWarn]})          
         return;
     }
 }

@@ -7,6 +7,11 @@ module.exports = {
     category: 'modmail',
     description: 'Close Ticket',
     async execute(client, message, args) {
+        const missingPermission = new MessageEmbed()
+        .setTitle("Permission Missing")
+        .setColor(colors.negative)
+        .setDescription("You do not have the necessary permissions to use this command.")
+        if (!message.member.roles.cache.has(modmail.modRole)) return message.channel.send({embeds: [missingPermission]})
         const userData = await User.findOne({channel: message.channel.id})
         const invalidChannel = new MessageEmbed()
         .setTitle("Invalid Channel")

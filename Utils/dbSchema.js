@@ -4,6 +4,7 @@ const userSchema = new Schema({
   user: {type: String, required: true},
   channel: {type: String, required: true},
   blacklist: {type: Boolean, required: false, default: false},
+  hold: {type: Boolean, require: false, default: false},
   ticket: {type: Boolean, required: false, default: false}
 })
 

@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose")
 const { Client, Intents, Permissions, MessageEmbed, Collection } = require("discord.js");
 const client = new Client({

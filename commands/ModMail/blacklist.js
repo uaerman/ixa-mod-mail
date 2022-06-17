@@ -7,6 +7,11 @@ module.exports = {
     category: 'modmail',
     description: 'Adds a user to the blacklist',
     async execute(client, message, args) {
+        const missingPermission = new MessageEmbed()
+        .setTitle("Permission Missing")
+        .setColor(colors.negative)
+        .setDescription("You do not have the necessary permissions to use this command.")
+        if (!message.member.roles.cache.has(modmail.modRole)) return message.channel.send({embeds: [missingPermission]})
         let member = message.mentions.users.first()
         let guild = message.guild
         let log = guild.channels.cache.get(modmail.log)
@@ -14,14 +19,13 @@ module.exports = {
         .setTitle("Invalid Arguments")
         .setColor(colors.negative)
         .setDescription("Please check the command usage below.")
-        .addField("Usage", `\`\`\`${settings.prefix}blacklist <member> \`\`\``)
+        .addField("Usage", `\`\`\`${settings.prefix}blacklist @member/<@memerID> \`\`\``)
         const invalidUser = new MessageEmbed()
         .setTitle("Invalid User")
         .setColor(colors.negative)
         .setDescription("You cannot add this user to the blacklist.")
         if (!member) return message.channel.send({embeds: [invalidArgs]})
         if (member.bot) return message.channel.send({embeds: [invalidUser]})
-        if (message.guild.members.cache.get(member.id).permissions.has("ADMINISTRATOR")) return message.channel.send(invalidUser)
         const profileData = await User.findOne({user: member.id})
         if (!profileData) {
             let userProfile = User.create({
@@ -54,7 +58,12 @@ module.exports = {
         .setTitle("User Blacklisted")
         .setDescription(`<@${message.author.id}> added the <@${member.id}> to the blacklist.`)
         .setColor(colors.red)
-        log.send({embeds: [successLog]})        
+        log.send({embeds: [successLog]})
+        const blacklistWarn = new MessageEmbed()
+        .setTitle("User Blacklisted")
+        .setDescription(`This user blacklisted! All messages will be ignored until user back whitelist.`)
+        .setColor(colors.negative)
+        message.guild.channels.cache.get(profileData.channel).send({embeds: [blacklistWarn]})  
         return;
     }
 }
