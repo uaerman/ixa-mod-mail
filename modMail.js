@@ -36,7 +36,7 @@ module.exports = async (client) => {
                     //Save channel and user data to database
                     let channelData = new Channel({userId: message.author.id, channelId: channel.id})
                     await channelData.save();
-                    let UserData = new User({user: message.author.id, channel: channel.id, ticket: true})
+                    let UserData = new User({user: message.author.id, channel: channel.id, date: Date.now(), ticket: true})
                     await UserData.save();
                     //Send New Ticket info to logs and user
                     const newTicket = new MessageEmbed()
