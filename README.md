@@ -60,7 +60,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![ixa-nsfw-screenshot][product-screenshot]](https://github.com/chillyixa/ixa-mod-mail.git)
+[![ixa-modmail-screenshot][product-screenshot]](https://github.com/chillyixa/ixa-mod-mail.git)
 
 IXA-ModMail is an open source Discord MotMail Bot built with discord.js
 
@@ -119,7 +119,7 @@ This project is available as open source under the terms of the <a href="https:/
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/chillyixa/ixa-nsfw-bot](https://github.com/chillyixa/ixa-mod-mail)
+Project Link: [https://github.com/chillyixa/ixa-mod-mail](https://github.com/chillyixa/ixa-mod-mail)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
