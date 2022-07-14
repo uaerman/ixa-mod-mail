@@ -119,7 +119,7 @@ This project is available as open source under the terms of the <a href="https:/
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/chillyixa/ixa-mod-mail](https://github.com/chillyixa/ixa-mod-mail)
+[My Discord Profile](https://discord.com/users/244847249866096640)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
