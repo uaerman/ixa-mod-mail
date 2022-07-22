@@ -1,5 +1,5 @@
 const { settings, colors, modmail } = require('../../config')
-const {MessageEmbed} = require("discord.js")
+const {EmbedBuilder} = require("discord.js")
 const {User, Channel} = require("../../Utils/dbSchema")
 module.exports = {
     name: 'close',
@@ -7,13 +7,13 @@ module.exports = {
     category: 'modmail',
     description: 'Close Ticket',
     async execute(client, message, args) {
-        const missingPermission = new MessageEmbed()
+        const missingPermission = new EmbedBuilder()
         .setTitle("Permission Missing")
         .setColor(colors.negative)
         .setDescription("You do not have the necessary permissions to use this command.")
         if (!message.member.roles.cache.has(modmail.modRole)) return message.channel.send({embeds: [missingPermission]})
         const userData = await User.findOne({channel: message.channel.id})
-        const invalidChannel = new MessageEmbed()
+        const invalidChannel = new EmbedBuilder()
         .setTitle("Invalid Channel")
         .setColor(colors.negative)
         .setDescription("Please make sure to go on the correct channel.")
@@ -25,7 +25,7 @@ module.exports = {
         else var reason = `Reason: ${reasonArgs}`;
      
         if (userData.blacklist == true) {
-            const blackListClosed = new MessageEmbed()
+            const blackListClosed = new EmbedBuilder()
                 .setTitle("Blacklisted Ticket Closed")
                 .setAuthor({name: `${message.author.tag} | (${message.author.id})`, iconURL: message.author.avatarURL({size: 1024, dynamic: false})})
                 .setDescription("The ticket of a Blacklisted user has been closed. This user will not open a ticket again.")
@@ -40,7 +40,7 @@ module.exports = {
         }
         else {
             
-            const ticketClosed = new MessageEmbed()
+            const ticketClosed = new EmbedBuilder()
                 .setTitle("Ticket Closed")
                 .setAuthor({name: `${message.author.tag} | (${message.author.id})`, iconURL: message.author.avatarURL({size: 1024, dynamic: false})})
                 .setColor(colors.negative)

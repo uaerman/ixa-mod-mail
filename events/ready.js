@@ -1,7 +1,8 @@
 const client = require("../index");
 const chalk = require("chalk")
 const moment = require("moment")
-const { log } = require("../Utils/consoleLog")
+const { log } = require("../Utils/consoleLog");
+const { ActivityType } = require("discord.js");
 
 client.on("ready", async () => {
   log(chalk.red("[IXA]") + chalk.blue(` ${client.user.username} READY!`))
@@ -10,7 +11,7 @@ client.on("ready", async () => {
   });
   client.user.setActivity({ 
     name: "Made for You 💚", 
-    type: "STREAMING", 
+    type: ActivityType.Streaming, 
     url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
   });
 });

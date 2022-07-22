@@ -1,5 +1,5 @@
 const { settings, colors, modmail } = require('../../config')
-const {MessageEmbed} = require("discord.js")
+const {EmbedBuilder} = require("discord.js")
 const {User, Channel} = require("../../Utils/dbSchema")
 module.exports = {
     name: 'blacklist',
@@ -7,7 +7,7 @@ module.exports = {
     category: 'modmail',
     description: 'Adds a user to the blacklist',
     async execute(client, message, args) {
-        const missingPermission = new MessageEmbed()
+        const missingPermission = new EmbedBuilder()
         .setTitle("Permission Missing")
         .setColor(colors.negative)
         .setDescription("You do not have the necessary permissions to use this command.")
@@ -15,12 +15,12 @@ module.exports = {
         let member = message.mentions.users.first()
         let guild = message.guild
         let log = guild.channels.cache.get(modmail.log)
-        const invalidArgs = new MessageEmbed()
+        const invalidArgs = new EmbedBuilder()
         .setTitle("Invalid Arguments")
         .setColor(colors.negative)
         .setDescription("Please check the command usage below.")
-        .addField("Usage", `\`\`\`${settings.prefix}blacklist @member/<@memerID> \`\`\``)
-        const invalidUser = new MessageEmbed()
+        .addFields([{name: "Usage",value: `\`\`\`${settings.prefix}blacklist @member/<@memerID> \`\`\``}])
+        const invalidUser = new EmbedBuilder()
         .setTitle("Invalid User")
         .setColor(colors.negative)
         .setDescription("You cannot add this user to the blacklist.")
@@ -35,7 +35,7 @@ module.exports = {
             })
         }
         else if (profileData.blacklist == true) {
-            const failed = new MessageEmbed()
+            const failed = new EmbedBuilder()
             .setTitle("Action Failed")
             .setDescription(`This user is already blacklisted.`)
             .setColor(colors.negative)
@@ -49,17 +49,17 @@ module.exports = {
                 return;
             })
         }
-        const success = new MessageEmbed()
+        const success = new EmbedBuilder()
         .setTitle("Action Successful")
         .setDescription(`The user you specified has been added to the blacklist.`)
         .setColor(colors.positive)
         message.channel.send({embeds: [success]})
-        const successLog = new MessageEmbed()
+        const successLog = new EmbedBuilder()
         .setTitle("User Blacklisted")
         .setDescription(`<@${message.author.id}> added the <@${member.id}> to the blacklist.`)
         .setColor(colors.red)
         log.send({embeds: [successLog]})
-        const blacklistWarn = new MessageEmbed()
+        const blacklistWarn = new EmbedBuilder()
         .setTitle("User Blacklisted")
         .setDescription(`This user blacklisted! All messages will be ignored until user back whitelist.`)
         .setColor(colors.negative)

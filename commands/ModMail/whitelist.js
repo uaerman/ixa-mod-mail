@@ -1,5 +1,5 @@
 const { settings, colors, modmail } = require('../../config')
-const {MessageEmbed} = require("discord.js")
+const {EmbedBuilder} = require("discord.js")
 const {User, Channel} = require("../../Utils/dbSchema")
 module.exports = {
     name: 'whitelist',
@@ -7,7 +7,7 @@ module.exports = {
     category: 'modmail',
     description: 'Remove a user from blacklist.',
     async execute(client, message, args) {
-        const missingPermission = new MessageEmbed()
+        const missingPermission = new EmbedBuilder()
         .setTitle("Permission Missing")
         .setColor(colors.negative)
         .setDescription("You do not have the necessary permissions to use this command.")
@@ -15,12 +15,12 @@ module.exports = {
         let member = message.mentions.users.first()
         let guild = message.guild
         let log = guild.channels.cache.get(modmail.log)
-        const invalidArgs = new MessageEmbed()
+        const invalidArgs = new EmbedBuilder()
         .setTitle("Invalid Arguments")
         .setColor(colors.negative)
         .setDescription("Please check the command usage below.")
-        .addField("Usage", `\`\`\`${settings.prefix}whitelist @member/<@memerID> \`\`\``)
-        const invalidUser = new MessageEmbed()
+        .addFields([{name: "Usage", value: `\`\`\`${settings.prefix}whitelist @member/<@memerID> \`\`\``}])
+        const invalidUser = new EmbedBuilder()
         .setTitle("Invalid User")
         .setColor(colors.negative)
         .setDescription("You cannot add this user to the whitelist.")
@@ -28,7 +28,7 @@ module.exports = {
         if (member.bot) return message.channel.send({embeds: [invalidUser]})
         const profileData = await User.findOne({user: member.id})
         if (!profileData) {
-           const failed = new MessageEmbed()
+           const failed = new EmbedBuilder()
             .setTitle("Action Failed")
             .setDescription(`This user is already whitelisted.`)
             .setColor(colors.negative)
@@ -46,17 +46,17 @@ module.exports = {
                 return;
             })
         }
-        const success = new MessageEmbed()
+        const success = new EmbedBuilder()
         .setTitle("Action Successful")
         .setDescription(`The user you specified has been removed to the blacklist.`)
         .setColor(colors.positive)
         message.channel.send({embeds: [success]})
-        const successLog = new MessageEmbed()
+        const successLog = new EmbedBuilder()
         .setTitle("User Whitelisted")
         .setDescription(`<@${message.author.id}> removed the <@${member.id}> to the blacklist.`)
         .setColor(colors.green)
         log.send({embeds: [successLog]})
-        const whitelistWarn = new MessageEmbed()
+        const whitelistWarn = new EmbedBuilder()
         .setTitle("User Whitelistes")
         .setDescription(`This user whitelist back! All messages will be send to user.`)
         .setColor(colors.positive)

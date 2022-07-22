@@ -1,27 +1,26 @@
 const mongoose = require("mongoose")
-const { Client, Intents, Permissions, MessageEmbed, Collection } = require("discord.js");
+const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js");
+
 const client = new Client({
   intents: [
-      Intents.FLAGS.GUILDS,
-      Intents.FLAGS.GUILD_MEMBERS,
-      Intents.FLAGS.GUILD_PRESENCES, 
-      Intents.FLAGS.GUILD_MESSAGES,
-      Intents.FLAGS.DIRECT_MESSAGES,
-      Intents.FLAGS.DIRECT_MESSAGE_TYPING,
-      Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-      Intents.FLAGS.GUILD_MEMBERS,
-      Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-      Intents.FLAGS.DIRECT_MESSAGE_TYPING,     
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildPresences, 
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.DirectMessageTyping,
+    GatewayIntentBits.DirectMessageReactions,  
   ],
-  partials: ["CHANNEL"]
+  partials: [Partials.Channel],
 })
+
 module.exports = client;
 
 const { settings } = require("./config");
 const {log} = require("./Utils/consoleLog")
 
 const chalk = require("chalk")
-const moment = require("moment")
 
 client.commands = new Collection();
 client.prefix = settings.prefix;
@@ -32,7 +31,6 @@ require("./modMail")(client)
 mongoose.connect(settings.mongodb_sv, {
   useNewUrlParser: true, 
   useUnifiedTopology: true,
-
 }).then(()=>{
   log(`${chalk.red("[IXA]")} ${chalk.yellow("Connected to the database!")}`)
 }).catch((err) => {

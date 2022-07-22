@@ -1,19 +1,18 @@
-const { MessageEmbed } = require("discord.js");
-
+const { EmbedBuilder } = require("discord.js");
+const {colors} = require("../../config")
 module.exports = {
   name: "ping",
   description: "-",
   async execute(client, message, args) {
     const m = await message.channel.send("Pinging...");
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle("Pong")
-      .addField(
-        "⏳ Latency",
-        `_**${m.createdTimestamp - message.createdTimestamp}ms**_`
-      )
-      .addField("💓 API", `_**${client.ws.ping}ms**_`)
-      .setColor("BLUE")
+      .addFields([
+        {name: "⏳ Latency", value: `_**${m.createdTimestamp - message.createdTimestamp}ms**_`},
+        {name: "💓 API", value: `_**${client.ws.ping}ms**_`}
+      ])
+      .setColor(colors.blue)
       .setTimestamp();
 
     return m.edit({ content: "Done!", embeds: [embed] });

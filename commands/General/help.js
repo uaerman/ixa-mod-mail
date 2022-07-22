@@ -1,5 +1,5 @@
-const { MessageEmbed } = require("discord.js");
-const { settings } = require("../../config");
+const { EmbedBuilder } = require("discord.js");
+const { settings, colors } = require("../../config");
 const prefix = settings.prefix
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
       if (command.usage) data.push(`**Usage**: ${command.usage}`);
       if (command.cooldown) data.push(`**Cooldown**: ${command.cooldown}`);
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(data.join("\n"))
         .setColor("BLUE")
         .setTimestamp()
@@ -57,13 +57,13 @@ module.exports = {
         });
       }
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setDescription(
           `Commands List\nUse ${prefix}help followed by command name to get detail of command, e.g. ${prefix}help ping.`
         )
         .addFields(data)
         .setThumbnail(client.user.avatarURL())
-        .setColor("BLUE")
+        .setColor(colors.blue)
         .setTimestamp()
         .setFooter({
           text: message.author.username,

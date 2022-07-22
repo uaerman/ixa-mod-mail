@@ -1,5 +1,5 @@
 const { settings, colors, modmail } = require('../../config')
-const {MessageEmbed} = require("discord.js")
+const {EmbedBuilder} = require("discord.js")
 const {User, Channel} = require("../../Utils/dbSchema")
 module.exports = {
     name: 'hold',
@@ -7,13 +7,13 @@ module.exports = {
     category: 'modmail',
     description: 'Hold channel',
     async execute(client, message, args) {
-        const missingPermission = new MessageEmbed()
+        const missingPermission = new EmbedBuilder()
         .setTitle("Permission Missing")
         .setColor(colors.negative)
         .setDescription("You do not have the necessary permissions to use this command.")
         if (!message.member.roles.cache.has(modmail.modRole)) return message.channel.send({embeds: [missingPermission]})
         const userData = await User.findOne({channel: message.channel.id})
-        const invalidChannel = new MessageEmbed()
+        const invalidChannel = new EmbedBuilder()
         .setTitle("Invalid Channel")
         .setColor(colors.negative)
         .setDescription("Please make sure to go on the correct channel.")
@@ -24,7 +24,7 @@ module.exports = {
         if (!reasonArgs) var reason = "No reason was provided.";
         else var reason = `Reason: ${reasonArgs}`;
         if (userData.hold === true) {
-            const alredyHold = new MessageEmbed()
+            const alredyHold = new EmbedBuilder()
             .setTitle("Channel Hold")
             .setDescription(`This channel already on hold. If you want continue channel must use \`${settings.prefix}uphold\` command!`)
             .setColor(colors.negative)
@@ -38,13 +38,13 @@ module.exports = {
                 return;
             })   
         }
-        const userWarn = new MessageEmbed()
+        const userWarn = new EmbedBuilder()
         .setTitle("Channel Hold")
         .setDescription(`Mods are holding your ticket, they will return as soon as possible.`)
         .setFooter({text: `${reason}`})
         .setColor(colors.negative)
         client.users.cache.get(userData.user).send({embeds: [userWarn]})
-        const holdWarn = new MessageEmbed()
+        const holdWarn = new EmbedBuilder()
         .setTitle("Channel Hold")
         .setDescription(`This channel on hold! All messages will be ignored until continue.`)
         .setColor(colors.negative)

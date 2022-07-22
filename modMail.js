@@ -1,5 +1,5 @@
 const { settings, colors, modmail } = require("./config");
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, ChannelType, PermissionFlagsBits } = require("discord.js");
 const mongoose = require("mongoose");
 const {User, Channel} = require("./Utils/dbSchema")
 
@@ -19,17 +19,18 @@ module.exports = async (client) => {
                 //New ticket
                 if (!findUser || findUser.ticket === false && findUser.blacklist === false) {
                     //Create new channel
-                    let channel = await guild.channels.create(`${message.author.username}`, {
-                        type: "GUILD_TEXT",
+                    let channel = await guild.channels.create({
+                        name: message.author.username, 
+                        type: ChannelType.GuildText,
                         topic: `User: ${message.author.tag}(${message.author.id})`,
                         parent: category,
                         permissionOverwrites: [
-                            {id: guild.roles.everyone, deny: ["VIEW_CHANNEL"]},
-                           {id: guild.roles.cache.get(modmail.modRole), allow: [
-                                "VIEW_CHANNEL",
-                                "SEND_MESSAGES",
-                                "EMBED_LINKS",
-                                "READ_MESSAGE_HISTORY"
+                            {id: guild.roles.everyone, deny: [PermissionFlagsBits.ViewChannel]},
+                            {id: guild.roles.cache.get(modmail.modRole), allow: [
+                                PermissionFlagsBits.ViewChannel,
+                                PermissionFlagsBits.SendMessages,
+                                PermissionFlagsBits.EmbedLinks,
+                                PermissionFlagsBits.ReadMessageHistory,
                             ]},
                           ]
                     });
@@ -39,7 +40,7 @@ module.exports = async (client) => {
                     let UserData = new User({user: message.author.id, channel: channel.id, date: Date.now(), ticket: true})
                     await UserData.save();
                     //Send New Ticket info to logs and user
-                    const newTicket = new MessageEmbed()
+                    const newTicket = new EmbedBuilder()
                     .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL({ size: 1024, dynamic: false })})
 				    .setDescription(`New ticket #${message.author.id}.`)
 				    .setTimestamp()
@@ -47,11 +48,11 @@ module.exports = async (client) => {
                     log.send({embeds: [newTicket]})
                     message.author.send({embeds: [newTicket]})
                     //New ticket info for mods
-                    const ticketInfoEmbed = new MessageEmbed()
+                    const ticketInfoEmbed = new EmbedBuilder()
                     .setTitle("New Ticket")
                     .setColor(colors.positive)
                     .setDescription("Type a message in this channel to reply. Messages starting with the server prefix ! are ignored, and can be used for staff discussion. Use the command !close [reason] to close this ticket.")
-                    .addField("User", `${message.author} (${message.author.id})`, true)
+                    .addFields([{name:"User",value: `${message.author} (${message.author.id})`, inline: true}])
                     .setFooter({text: `${message.author.tag} | (${message.author.id})`, iconURL: message.author.avatarURL({ size: 1024, dynamic: false })})
                     await channel.send({embeds: [ticketInfoEmbed]})
                     await channel.send({content: message.content})
@@ -60,19 +61,19 @@ module.exports = async (client) => {
                 //If user alredy has ticket 
                 let userBlocked = findUser.blacklist;
                 let channelHold = findUser.hold
-                const userBlackListedEmbed = new MessageEmbed()
+                const userBlackListedEmbed = new EmbedBuilder()
                 .setTitle("Ops")
                 .setDescription("That server has blacklisted you from sending a message there.")
                 .setColor(colors.red)
                 //If user blacklisted
                 if (findUser.blacklist === true) return message.author.send({embeds: [userBlackListedEmbed]})
-                const channelHoldEmbed = new MessageEmbed()
+                const channelHoldEmbed = new EmbedBuilder()
                 .setTitle("Ops")
                 .setDescription("Mods are holding your ticket, they will return as soon as possible.")
                 .setColor(colors.negative)
                 //If channel hold by mods
                 if (findUser.hold === true) return message.author.send({embeds: [channelHoldEmbed]})
-                const userMessageReceivedEmbed = new MessageEmbed()
+                const userMessageReceivedEmbed = new EmbedBuilder()
                 .setTitle("Message Received")
                 .setDescription(message.content)
                 .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL({ size: 1024, dynamic: false })})
@@ -97,7 +98,7 @@ module.exports = async (client) => {
             //If ticket is hold ignore message
             if (isHold === true) return;
             //Else send message to user
-            const messageReceivedEmbed = new MessageEmbed()
+            const messageReceivedEmbed = new EmbedBuilder()
             .setTitle("Message Received")
             .setDescription(message.content)
             .setAuthor({name: `${message.author.tag}`, iconURL: message.author.avatarURL({ size: 1024, dynamic: false })})
