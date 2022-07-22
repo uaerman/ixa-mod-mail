@@ -56,8 +56,8 @@
 </details>
 
 
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![ixa-modmail-screenshot][product-screenshot]](https://github.com/chillyixa/ixa-mod-mail.git)
@@ -120,6 +120,7 @@ This project is available as open source under the terms of the <a href="https:/
 ## Contact
 
 [My Discord Profile](https://discord.com/users/244847249866096640)
+[Instagram](https://www.instagram.com/umurerman34/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -143,4 +144,4 @@ This project is available as open source under the terms of the <a href="https:/
 [npm-shield]: https://img.shields.io/npm/v/npm?label=npm&logo=npm&logoColor=white&style=for-the-badge
 [node-shield]: https://img.shields.io/node/v/discord.js?label=NodeJS&logo=node.js&logoColor=white&style=for-the-badge
 [djs-shield]: https://img.shields.io/npm/v/discord.js?label=discord.js&logo=node.js&logoColor=white&style=for-the-badge
-[product-screenshot]: https://cdn.discordapp.com/attachments/986833737734037524/986833991317454868/unknown.png?size=4096
+[product-screenshot]: https://cdn.discordapp.com/attachments/1000184353160175696/1000184441156673546/unknown.png?size=4096
