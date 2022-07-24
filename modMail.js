@@ -1,6 +1,5 @@
 const { settings, colors, modmail } = require("./config");
 const { EmbedBuilder, ChannelType, PermissionFlagsBits } = require("discord.js");
-const mongoose = require("mongoose");
 const {User, Channel} = require("./Utils/dbSchema")
 
 module.exports = async (client) => {
@@ -55,7 +54,8 @@ module.exports = async (client) => {
                     .addFields([{name:"User",value: `${message.author} (${message.author.id})`, inline: true}])
                     .setFooter({text: `${message.author.tag} | (${message.author.id})`, iconURL: message.author.avatarURL({ size: 1024, dynamic: false })})
                     await channel.send({embeds: [ticketInfoEmbed]})
-                    await channel.send({content: message.content})
+                    await channel.send({content: message.content || "Image:"})
+                    if (message.attachments.size > 0) await channel.send({files: message.attachments.map(atc => atc.url)})
                     return;
                 }
                 //If user alredy has ticket 
@@ -75,12 +75,13 @@ module.exports = async (client) => {
                 if (findUser.hold === true) return message.author.send({embeds: [channelHoldEmbed]})
                 const userMessageReceivedEmbed = new EmbedBuilder()
                 .setTitle("Message Received")
-                .setDescription(message.content)
+                .setDescription(message.content || " ")
                 .setAuthor({name: `${message.author.username}`, iconURL: message.author.avatarURL({ size: 1024, dynamic: false })})
                 .setColor(colors.negative)
                 .setTimestamp();
                 //Else send message ticket channel
-                await guild.channels.cache.get(findUser.channel).send({embeds: [userMessageReceivedEmbed]})
+                if (message.attachments.size > 0) await guild.channels.cache.get(findUser.channel).send({files: message.attachments.map(atc => atc.url)})
+                if (message.content.length > 0) await guild.channels.cache.get(findUser.channel).send({embeds: [userMessageReceivedEmbed]})
                 return;
             }
             //Mod side
@@ -98,12 +99,14 @@ module.exports = async (client) => {
             //If ticket is hold ignore message
             if (isHold === true) return;
             //Else send message to user
+            
             const messageReceivedEmbed = new EmbedBuilder()
             .setTitle("Message Received")
-            .setDescription(message.content)
+            .setDescription(message.content || " ")
             .setAuthor({name: `${message.author.tag}`, iconURL: message.author.avatarURL({ size: 1024, dynamic: false })})
             .setColor(colors.negative)
             .setTimestamp();
-            await author.send({embeds: [messageReceivedEmbed]})
+            if (message.attachments.size > 0) await author.send({files: message.attachments.map(atc => atc.url)})
+            if (message.content.length > 0) await author.send({embeds: [messageReceivedEmbed]})
    })
 }
